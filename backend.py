@@ -1,9 +1,6 @@
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 import re
 from tesaurus import *
-
-
-db = pymysql.connect("localhost","testuser","test123","TESTDB" )
 stopword = StopWordRemoverFactory().create_stop_word_remover()
 
 query = input("Masukkan Query : ")
@@ -22,22 +19,6 @@ for word in synonymList:
         for sentence in sentenceList:
             newList.append(sentence+[synonym])
     sentenceList = newList
-
-# prepare a cursor object using cursor() method
-cursor = db.cursor()
-
-# Drop table if it already exist using execute() method.
-cursor.execute("DROP TABLE IF EXISTS EMPLOYEE")
-
-# Create table as per requirement
-sql = """CREATE TABLE EMPLOYEE (
-   PERTANYAAN  CHAR(20) NOT NULL,
-   JAWABAN  CHAR(20))"""
-
-cursor.execute(sql)
-cursor.execute(sql)
-# disconnect from server
-db.close()
 
 for sentence in sentenceList:
     #diproses, cari secara KMP, Boyer-Moore, dan Regex
