@@ -3,19 +3,30 @@ def find_occurrences(S,p):
     Jika ditemukan, return index lokasi ditemukan.
     Jika tidak, return []
     """
-    matches = []
+    matches = -1
+    count = 0
+    maxcount = 0
     f = prefix(p)
     n, m = len(S), len(p)
     j = 0
     for i in range(n):
+      if S[i] == p[j]:
+         count+=1
       while j >= 0 and S[i] != p[j]:
+         if(count>maxcount):
+            maxcount = count-1
+         count = 0
          if j > 0: j = f[j-1]
          else: j = -1
       j += 1  
       if j == m:
          j = f[m-1]
-         matches.append(i-m+1)
-    return matches
+         matches = (i-m+1)
+         break
+    
+    if(count>maxcount):
+      maxcount = count
+    return maxcount+1
 
 def prefix(p):
     m = len(p)
@@ -31,3 +42,7 @@ def prefix(p):
       pi[i] = j
     return pi
 
+
+text = input("text : ")
+pattern = input("pattern yang ingin dicari : ")
+print(str(find_occurrences(text,pattern)/len(pattern) * 100) + '%')
