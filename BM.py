@@ -38,6 +38,6 @@ def buildLast(pattern):
         last[ord(pattern[i])] = i
     return last
 
-text = input("text : ")
-pattern = input("pattern yang ingin dicari : ")
-print(str(bmMatch(text,pattern)/len(pattern) * 100) + '%')
+#text = input("text : ")
+#pattern = input("pattern yang ingin dicari : ")
+#print(str(bmMatch(text,pattern)/len(pattern) * 100) + '%')

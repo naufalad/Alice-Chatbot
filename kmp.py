@@ -14,7 +14,7 @@ def find_occurrences(S,p):
          count+=1
       while j >= 0 and S[i] != p[j]:
          if(count>maxcount):
-            maxcount = count-1
+            maxcount = count
          count = 0
          if j > 0: j = f[j-1]
          else: j = -1
@@ -26,7 +26,7 @@ def find_occurrences(S,p):
     
     if(count>maxcount):
       maxcount = count
-    return maxcount+1
+    return maxcount
 
 def prefix(p):
     m = len(p)
@@ -43,6 +43,6 @@ def prefix(p):
     return pi
 
 
-text = input("text : ")
+'''text = input("text : ")
 pattern = input("pattern yang ingin dicari : ")
-print(str(find_occurrences(text,pattern)/len(pattern) * 100) + '%')
+print(str(find_occurrences(text,pattern)))'''
