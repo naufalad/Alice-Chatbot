@@ -1,3 +1,0 @@
-bikin database pertanyaan jawaban -> di mysql
-bikin di web(sementara)(backupan line API)
-backend -> regex ditanyain
