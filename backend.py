@@ -103,67 +103,88 @@ def regex(S):
     S = S.replace(' ', '.*')
     return S
 
-stopword = StopWordRemoverFactory().create_stop_word_remover()
-pertanyaan = []
-jawaban = []
-for line in open('pertanyaan.txt').readlines():
-    i = 0
-    j = 0
-    while (line[j] != ' '):
-        j+=1
-    while (line[i] != '?'):
-        i+=1   
-    pertanyaan.append(stopword.remove((line[j+1:i].lower())))
-    jawaban.append(line[i+2:len(line)-1])
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        print("Halo, namaku Alice.<br>Selamat datang di ChatBot Alice.<br>Tanyakan apapun kepadaku dan aku akan mencoba menjawabnya...<br>...dengan KMP, BM, dan Regex.")
+    else:
+        stopword = StopWordRemoverFactory().create_stop_word_remover()
+        pertanyaan = []
+        purePertanyaan = []
+        jawaban = []
+        for line in open('pertanyaan.txt').readlines():
+            i = 0
+            j = 0
+            while (line[j] != ' '):
+                j+=1
+            while (line[i] != '?'):
+                i+=1
+            purePertanyaan.append((line[j+1:i+1]))   
+            pertanyaan.append(stopword.remove((line[j+1:i].lower())))
+            jawaban.append(line[i+2:len(line)-1])
 
-query = re.sub('[%s]' % re.escape(string.punctuation), '', sys.argv[1].lower())
-print()
-query = stopword.remove(query)
-querylist = query.split(' ')
-synonymList = []
-for queryWord in querylist:
-    synonymList.append(getSinonim(queryWord))
-#dikombinasi
-sentenceList = [[]]
-for word in synonymList:
-    newList = []
-    for synonym in word:
-        for sentence in sentenceList:
-            newList.append(sentence+[synonym])
-    sentenceList = newList
+        query = re.sub('[%s]' % re.escape(string.punctuation), '', sys.argv[1].lower())
+        query = stopword.remove(query)
+        querylist = query.split(' ')
+        synonymList = []
+        for queryWord in querylist:
+            synonymList.append(getSinonim(queryWord))
+        #dikombinasi
+        sentenceList = [[]]
+        for word in synonymList:
+            newList = []
+            for synonym in word:
+                for sentence in sentenceList:
+                    newList.append(sentence+[synonym])
+            sentenceList = newList
 
-pertanyaanRekomendasi = []
-#maxi = 0
+        pertanyaanRekomendasi = []
+        #maxi = 0
 
-for sentence in sentenceList:
-    sentence = (' '.join(sentence))
-    regexQuery = regex(sentence)
-    i = 0
-    for p in pertanyaan:
-        found = False
-        rgx = re.search(regexQuery, p)
-        kmp = find_occurrences(p, sentence)/len(p)
-        bm = bmMatch(p, sentence)/len(p)
-        #kecocokan diatas 90%
-        #maxi = max(maxi,max(kmp,bm))
-        if(kmp>=0.9 or bm >= 0.9 or rgx):
-            found = True
-            break
-        elif(kmp>=0.6 or bm >= 0.6 and len(pertanyaanRekomendasi)<3):
-            pertanyaanRekomendasi.append(p)
-        #kalo gaada 90%, sementara diadd dulu ke pertanyaan yang diatas 60%
-        i+=1
-    if found:
-        break
-#print(maxi)
-if found:
-    output = jawaban[i]
-elif(len(pertanyaanRekomendasi)!=0):
-    output = "Apakah maksud anda : "
-    for x in pertanyaanRekomendasi:
-        output+= '\n' + x
-else:
-    output = "Aku tidak mengerti maksud pertanyaanmu.\nNgomong-ngomong, tahukah kamu bahwa kita bernafas kira-kira 23.000 kali setiap harinya!\nYa kalau aku engga sih hehe\n\nSilahkan coba tanya aku lagi untuk fakta lainnya!"
-    #fakta gaje lah wkwk
-print(output)
-print()
+        '''for sentence in sentenceList:
+            sentence = (' '.join(sentence))
+            regexQuery = regex(sentence)
+            i = 0
+            for p in pertanyaan:
+                found = False
+                rgx = re.search(regexQuery, p)
+                kmp = find_occurrences(p, sentence)/len(p)
+                bm = bmMatch(p, sentence)/len(p)
+                #kecocokan diatas 90%
+                #maxi = max(maxi,max(kmp,bm))
+                if(kmp>=0.9 or bm >= 0.9 or rgx):
+                    found = True
+                    break
+                elif(kmp>=0.6 or bm >= 0.6 and len(pertanyaanRekomendasi)<3):
+                    pertanyaanRekomendasi.append(p)
+                #kalo gaada 90%, sementara diadd dulu ke pertanyaan yang diatas 60%
+                i+=1
+            if found:
+                break'''
+        i=0
+        for p in pertanyaan:
+            found = False
+            for sentence in sentenceList:
+                sentence = (' '.join(sentence))
+                regexQuery = regex(sentence)
+                rgx = re.search(regexQuery, p)
+                kmp = find_occurrences(p, sentence)/len(p)
+                bm = bmMatch(p, sentence)/len(p)
+                if(kmp>=0.9 or bm >= 0.9 or rgx):
+                    found = True
+                    break
+                elif(kmp>=0.6 or bm >= 0.6 and len(pertanyaanRekomendasi)<3):
+                    pertanyaanRekomendasi.append(i)
+            if found:
+                break
+            i+=1
+        #print(maxi)
+        if found:
+            output = jawaban[i]
+        elif(len(pertanyaanRekomendasi)!=0):
+            output = "Apakah maksudmu : "
+            for x in pertanyaanRekomendasi:
+                output+= "<br>" + purePertanyaan[x]
+        else:
+            output = "Aku tidak mengerti maksud pertanyaanmu.<br>Ngomong-ngomong, tahukah kamu bahwa kita bernafas kira-kira 23.000 kali setiap harinya!<br>Ya kalau aku engga sih hehe<br><br>Silahkan coba tanya aku lagi untuk fakta lainnya!"
+            #fakta gaje lah wkwk
+        print(output)

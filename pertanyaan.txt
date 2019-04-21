@@ -1,6 +1,6 @@
 1. Siapa nama koordinator dosen mata kuliah strategi algoritma 2018/2019? Rinaldi Munir
 2. Siapa nama koordas strategi algoritma? Kevin Andrian Liwinata
-3. Berapa jumlah SKS minimal untuk lulus S1 di ITB? 144 SKS
+3. Berapa jumlah SKS minimal untuk lulus S1 di ITB? 144 SKS[
 4. Apa kepanjangan SKSD? Sistem Komunikasi Satelit Domestik
 5. Tanggal berapa diadakan pemilu tahun ini? 17 April 2019
 6. Sudah berapa kali diadakan pemilu presiden? 4 Kali
@@ -19,3 +19,4 @@
 19. Dimana Soekarno memproklamasikan kemerdekaan Indonesia? Jl. Pegangsaan Timur No.56
 20. Dimana kantin terdekat Labtek 5? Kantin Borju
 21. Siapa nama kamu? Alice
+22. Hey? Hallo 
